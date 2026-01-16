@@ -496,7 +496,13 @@ void LegacyProtocolPacketBased::on_read_finished(ReadResult result) {
             size_t actual_response_length = expected_response_length - output_buffer.size() + 2;
             write_le<uint16_t>(*seq_no | 0x8000, tx_buf_);
 
-            FIBRE_LOG(D) << "send packet: " << as_hex(cbufptr_t{tx_buf_, actual_response_length});
+#if FIBRE_ENABLE_DEBUG_LOG
+            {
+                auto dbg = FIBRE_LOG(D);
+                dbg << "send packet: ";
+                fibre::operator<<(dbg, as_hex(cbufptr_t{tx_buf_, actual_response_length}));
+            }
+#endif
             tx_channel_->start_write({tx_buf_, actual_response_length}, &tx_handle_, MEMBER_CB(this, on_write_finished));
         }
 #else
