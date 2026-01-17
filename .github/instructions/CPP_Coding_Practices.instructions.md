@@ -1,18 +1,10 @@
 ---
-applyTo: '**'
+name: 'C++ Coding Practices'
+description: 'C++ coding standards, formatting rules, and modern best practices for firmware development.'
+applyTo: '**/*.{cpp,c,hpp,h,cc}'
 ---
 
 # C++ Coding Practices and Guidelines
-
-## Table of Contents
-1. [Naming Conventions](#naming-conventions)
-2. [Code Organization](#code-organization)
-3. [Documentation Standards](#documentation-standards)
-4. [Modern C++ Best Practices](#modern-cpp-best-practices)
-5. [Code Formatting](#code-formatting)
-6. [General Guidelines](#general-guidelines)
-7. [Error Handling](#error-handling)
-8. [Performance Considerations](#performance-considerations)
 
 ---
 

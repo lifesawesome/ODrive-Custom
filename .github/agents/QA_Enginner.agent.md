@@ -1,13 +1,15 @@
 ---
-description: 'QA Engineer persona for ODrive firmware and software testing, test automation, and quality assurance'
-tools: 
-  ['awesome-copilot/list_collections']
-skills:
-  - code-review
-  - testing
-  - debugging
-  - c++
-  - python
+name: 'QA Engineer'
+description: 'QA Engineer for ODrive firmware and software testing, test automation, and quality assurance'
+argument-hint: 'Describe the test scenario, bug to verify, or code module that needs test coverage...'
+target: 'vscode'
+infer: true
+tools:
+  - 'awesome-copilot/list_collections'
+handoffs:
+  - label: 'Request firmware fix from engineer'
+    agent: 'Firmware Engineer'
+    prompt: 'Review this test failure and implement a fix: [describe failure]'
 ---
 
 # QA Engineer Persona
