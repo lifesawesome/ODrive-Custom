@@ -304,7 +304,7 @@ The encoder updates position estimates in an 8 kHz interrupt. The main control l
 
 ### Buggy Code
 
-**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `Encoder` class (lines 55-82)
+**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `Encoder` class (lines 65-81)
 
 ```cpp
 class Encoder {
@@ -463,7 +463,7 @@ The encoder calculates motor RPM from tick counts. At low speeds it works fine, 
 
 ### Buggy Code
 
-**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `SpeedCalculator` class (lines 92-112)
+**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `SpeedCalculator` class (lines 104-111)
 
 ```cpp
 class SpeedCalculator {

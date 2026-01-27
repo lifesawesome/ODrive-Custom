@@ -916,7 +916,7 @@ if (fault_write_idx_ >= FAULT_HISTORY_SIZE) {
 
 ### Bug 2: Race Condition in Position Estimate (5 min)
 
-**File:** `demo_buggy.cpp` — Encoder class (lines 55-82)
+**File:** `demo_buggy.cpp` — Encoder class (lines 65-81)
 
 **Buggy Code:**
 ```cpp
