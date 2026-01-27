@@ -548,15 +548,15 @@ float get_position() const {  // Now const-correct
 **Fix 3 bugs in `demo_buggy.cpp` in 15 minutes:**
 
 1. **⭐⭐ Circular Buffer (5 min)** — FaultLogger class
-   - Off-by-one boundary check (lines 29-37)
+   - Off-by-one boundary check (lines 31-38)
    - Use /fix in Chat mode
 
 2. **⭐⭐⭐ Race Condition (5 min)** — Encoder class
-   - ISR writes, main loop reads (lines 63-80)
+   - ISR writes, main loop reads (lines 65-81)
    - Evaluate multiple solutions
 
 3. **⭐⭐ Integer Overflow (5 min)** — SpeedCalculator class
-   - RPM calculation overflow (lines 96-106)
+   - RPM calculation overflow (lines 104-111)
    - Use /explain then /fix
 
 **Files:** `demo_buggy.cpp` + `hands-on-exercises.md`

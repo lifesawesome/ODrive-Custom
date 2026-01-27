@@ -226,9 +226,9 @@ and the call from motor.cpp.
 
 **Step 1: Open the demo file**
 
-Open `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` and scroll to the `FaultLogger` class (around line 23).
+Open `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` and scroll to the `FaultLogger` class (around line 24).
 
-**The buggy code (lines 29-37):**
+**The buggy code (lines 31-38):**
 ```cpp
 // BUG: Can you spot the off-by-one error?
 void log_fault(uint32_t error_code) {
@@ -253,7 +253,7 @@ void log_fault(uint32_t error_code) {
 
 **Step 2: Use /fix in Chat**
 
-1. **Select lines 29-37** (the entire `log_fault` function)
+1. **Select lines 31-38** (the entire `log_fault` function)
 2. Open **Inline Chat** panel (`Ctrl+I`) first
 3. Type: 
 ```
@@ -314,9 +314,9 @@ Explanation:
 
 **Step 4: Show threading bug**
 
-**In the same file (`demo_buggy.cpp`), scroll to the `Encoder` class (around line 52).**
+**In the same file (`demo_buggy.cpp`), scroll to the `Encoder` class (around line 55).**
 
-**The buggy code (lines 63-76):**
+**The buggy code (lines 65-77):**
 ```cpp
 // Called from 8 kHz interrupt
 void update_isr() {
@@ -342,7 +342,7 @@ float get_position() {
 
 **Step 5: Ask /fix for solutions**
 
-1. **Select lines 63-80** (both `update_isr()` and `get_position()` functions)
+1. **Select lines 65-81** (both `update_isr()` and `get_position()`/`get_velocity()` functions)
 2. Open **Copilot Chat** panel (`Ctrl+Alt+I`)
 3. Type:
 ```
@@ -410,7 +410,7 @@ Recommendation for 8 kHz ISR: Option 1 (interrupt disable) - only ~10 cycles.
 ## Demo 3: Real-World Debug Session (9 min)
 
 ### Setup
-- Continue using `demo_buggy.cpp` - scroll to the `SpeedCalculator` class (around line 85)
+- Continue using `demo_buggy.cpp` - scroll to the `SpeedCalculator` class (around line 92)
 - This demonstrates the full /explain → /fix → test workflow
 
 ### Demo Flow
@@ -422,7 +422,7 @@ Recommendation for 8 kHz ISR: Option 1 (interrupt disable) - only ~10 cycles.
 
 **Step 1: Show the buggy code**
 
-**In `demo_buggy.cpp`, scroll to the `SpeedCalculator` class (line 85). The buggy code is lines 96-106:**
+**In `demo_buggy.cpp`, scroll to the `SpeedCalculator` class (line 92). The buggy code is lines 104-111:**
 
 ```cpp
 // BUG: Integer overflow at high speeds!
@@ -446,7 +446,7 @@ float calculate_rpm() {
 
 **Step 2: Ask for explanation**
 
-1. **Select lines 96-106** (the `calculate_rpm` function)
+1. **Select lines 104-111** (the `calculate_rpm` function)
 2. Open **Copilot Chat** panel (`Ctrl+Alt+I`)
 3. Type: 
 ```
@@ -523,7 +523,7 @@ First select @ODrive-QA in chat.
 Generate a unit test for calculate_rpm that tests high speed values to catch integer overflow
 ```
 
-> **Note:** Using `@ODrive-QA` invokes the `odrive-qa-assistant` skill which is specialized for test generation.
+> **Note:** Using `@ODrive-QA` invokes the `cpp-testing` skill which is specialized for test generation.
 
 **Expected AI Response:**
 ```cpp
@@ -559,7 +559,7 @@ TEST_CASE("Encoder RPM calculation at high speed") {
 ```
 
 **Presenter Says:**
-> "Excellent! `@ODrive-QA` generated a unit test that specifically checks high-speed values where overflow would occur. This ensures the bug stays fixed. The agent invoked the `odrive-qa-assistant` skill to create comprehensive tests."
+> "Excellent! `@ODrive-QA` generated a unit test that specifically checks high-speed values where overflow would occur. This ensures the bug stays fixed. The agent invoked the `cpp-testing` skill to create comprehensive tests."
 
 ---
 
