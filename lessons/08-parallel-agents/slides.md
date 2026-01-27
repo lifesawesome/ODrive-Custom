@@ -215,7 +215,8 @@ Developer ──→ Define Task
 
 **Section 8: Parallel Agents**
 ✅ 3x faster with parallel workflows  
-✅ 2 agents: `@ODrive-Engineer` + `@ODrive-QA`  
+✅ 6 agents available: `@ODrive-Engineer`, `@ODrive-QA`, `@ODrive-Ops`, `@ODrive-Reviewer`, `@ODrive-Toolchain`, `@ada-to-cpp-migrator`  
+✅ Primary orchestrators: `@ODrive-Engineer` + `@ODrive-QA`  
 ✅ Same agent, different task contexts  
 ✅ Skills invoked automatically  
 ✅ Orchestration is the skill  
@@ -248,6 +249,8 @@ Developer ──→ Define Task
 - What if agents give contradictory advice?
 - Can I use the same agent in multiple windows?
   - **Yes!** Different task contexts, same agent.
+- What other agents are available besides Engineer and QA?
+  - `@ODrive-Ops` (CI/CD), `@ODrive-Reviewer` (code review), `@ODrive-Toolchain` (builds), `@ada-to-cpp-migrator`
 - Do parallel agents cost more?
 - Can I use this in air-gapped environments?
 

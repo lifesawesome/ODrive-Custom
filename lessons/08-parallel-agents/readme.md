@@ -912,10 +912,28 @@ Implement sensorless startup state with I/F current injection.
 | Hardware specs | `@ODrive-Engineer` | pcb-review (🚧), signal-integrity (🚧) |
 | Testing | `@ODrive-QA` | cpp-testing |
 | CI/CD & releases | `@ODrive-Ops` | odrive-ops |
+| Code review | `@ODrive-Reviewer` | (read-only analysis) |
+| Build/compile | `@ODrive-Toolchain` | odrive-toolchain |
+| Ada migration | `@ada-to-cpp-migrator` | ada-cpp-migration |
 
 > **Legend:** 🚧 = Planned skill (not yet implemented)
 >
 > **Note:** Use the same agent in multiple windows with different task contexts. The agent routes to appropriate skills automatically.
+
+### Available Agents Summary
+
+The ODrive system includes **6 agents** for different purposes:
+
+| Agent | Role | Primary Use |
+|-------|------|-------------|
+| `@ODrive-Engineer` | Primary development orchestrator | Firmware, motor control, hardware implementation |
+| `@ODrive-QA` | Testing & QA orchestrator | Test generation, build verification, quality assurance |
+| `@ODrive-Ops` | CI/CD & Release operations | Workflows, releases, deployments |
+| `@ODrive-Reviewer` | Code review | Style, safety, embedded best practices (read-only) |
+| `@ODrive-Toolchain` | Build & test operations | Compile, search symbols, list errors |
+| `@ada-to-cpp-migrator` | Ada migration specialist | Convert Ada to Modern C++ (C++20/23) |
+
+> **Tip:** For parallel workflows, the primary orchestrators (`@ODrive-Engineer`, `@ODrive-QA`) are most commonly used. Specialized agents like `@ODrive-Reviewer` and `@ODrive-Toolchain` can be added for specific tasks.
 
 ### Parallel Workflow Checklist
 
@@ -1304,7 +1322,11 @@ Plan → Launch → Review → Integrate
 | Agent | Primary Use |
 |-------|-------------|
 | `@ODrive-Engineer` | Firmware, control, hardware (via different prompts) |
-| `@ODrive-QA` | Testing, CI/CD, quality assurance |
+| `@ODrive-QA` | Testing, build verification, quality assurance |
+| `@ODrive-Ops` | CI/CD workflows, releases, deployments |
+| `@ODrive-Reviewer` | Code review for style, safety, best practices |
+| `@ODrive-Toolchain` | Build, compile, symbol search |
+| `@ada-to-cpp-migrator` | Ada to Modern C++ migration |
 
 | Pattern | Description |
 |---------|-------------|
