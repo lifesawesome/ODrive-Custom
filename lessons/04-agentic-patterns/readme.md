@@ -19,8 +19,8 @@ This lesson teaches you how to become an **agentic developer**—someone who orc
 - Iterative refinement: polishing AI output into production-ready code
 
 **Key Concepts:**
-- **2 Orchestrator Agents:** `@ODrive-Engineer` (development) and `@ODrive-QA` (testing)
-- **Skills:** Specialized capabilities agents invoke automatically (e.g., `odrive-qa-assistant`)
+- **6 Available Agents:** Primary orchestrators `@ODrive-Engineer` (development) and `@ODrive-QA` (testing), plus specialized agents
+- **Skills:** Specialized capabilities agents invoke automatically (e.g., `cpp-testing`, `odrive-toolchain`)
 - **Context Layering:** Building prompts with constitution → agent → files → constraints → acceptance criteria
 
 ---
@@ -175,25 +175,38 @@ Acceptance Criteria:
 ```
 Result: **15 minutes with review** (vs 2-4 hours manual)
 
-> **Note:** The ODrive-Engineer agent will automatically invoke the appropriate **skill** (e.g., `odrive-qa-assistant` for building) based on your request.
+> **Note:** The ODrive-Engineer agent will automatically invoke the appropriate **skill** (e.g., `odrive-toolchain` for building) based on your request.
 
 ### Custom Agents & Skills in ODrive
 
-We have **2 orchestrator agents** that invoke **specialized skills**:
+We have **6 agents** available, with **2 primary orchestrators** that invoke **specialized skills**:
+
+#### Primary Orchestrators
 
 | Agent | Role | Invokes Skills |
 |-------|------|----------------|
-| `@ODrive-Engineer` | Primary development orchestrator | odrive-qa-assistant, devops-engineer, control-algorithms*, foc-tuning*, sensorless-control*, pcb-review*, signal-integrity* |
-| `@ODrive-QA` | Testing & DevOps orchestrator | odrive-qa-assistant, test-automation*, devops-engineer |
+| `@ODrive-Engineer` | Primary development orchestrator | odrive-toolchain, odrive-ops, control-algorithms*, foc-tuning*, sensorless-control*, pcb-review*, signal-integrity* |
+| `@ODrive-QA` | Testing & QA orchestrator | cpp-testing, odrive-toolchain |
 
 *Skills marked with * are planned (🚧)
+
+#### Additional Agents
+
+| Agent | Role |
+|-------|------|
+| `@ODrive-Ops` | CI/CD & release operations |
+| `@ODrive-Reviewer` | Code review (read-only analysis) |
+| `@ODrive-Toolchain` | Build, compile, symbol search |
+| `@ada-to-cpp-migrator` | Ada to Modern C++ migration |
 
 #### Available Skills (Production ✅)
 
 | Skill | Capabilities |
 |-------|-------------|
-| `odrive-qa-assistant` | Build firmware, run tests, symbol search, interface inspection |
-| `devops-engineer` | CI/CD workflows, releases, GitHub Actions, deployments |
+| `cpp-testing` | Unit test generation, doctest framework, TDD workflow |
+| `odrive-toolchain` | Build firmware, run tests, symbol search, interface inspection |
+| `odrive-ops` | CI/CD workflows, releases, GitHub Actions, deployments |
+| `ada-cpp-migration` | Ada to C++ code migration, type mapping, concurrency patterns |
 
 #### Planned Skills (🚧)
 
@@ -910,11 +923,14 @@ Suggest unit tests for the diagnostics module.
 
 | Task Type | Agent | Skill Invoked |
 |-----------|-------|---------------|
-| Low-level firmware | `@ODrive-Engineer` | (direct) + odrive-qa-assistant for builds |
+| Low-level firmware | `@ODrive-Engineer` | (direct) + odrive-toolchain for builds |
 | Control algorithms | `@ODrive-Engineer` | control-algorithms (🚧), foc-tuning (🚧) |
 | Hardware interfaces | `@ODrive-Engineer` | pcb-review (🚧), signal-integrity (🚧) |
-| Testing & validation | `@ODrive-QA` | odrive-qa-assistant, test-automation (🚧) |
-| CI/CD & releases | `@ODrive-QA` | devops-engineer |
+| Testing & validation | `@ODrive-QA` | cpp-testing |
+| CI/CD & releases | `@ODrive-Ops` | odrive-ops |
+| Code review | `@ODrive-Reviewer` | (read-only analysis) |
+| Build/compile | `@ODrive-Toolchain` | odrive-toolchain |
+| Ada migration | `@ada-to-cpp-migrator` | ada-cpp-migration |
 
 > **Legend:** 🚧 = Planned skill (not yet implemented)
 
@@ -1133,15 +1149,17 @@ Yes! Agents in "Agent Mode" can:
 | **Orchestrators** - Direct the conversation | **Capabilities** - Specific actions |
 | You select them (`@ODrive-Engineer`) | Agents invoke them automatically |
 | Defined in `.github/agents/` | Defined in `.github/skills/` |
-| 2 in ODrive system | Multiple per agent |
+| 6 in ODrive system | Multiple per agent |
 
-**Example:** When you ask `@ODrive-QA` to run tests, it automatically invokes the `odrive-qa-assistant` skill.
+**Example:** When you ask `@ODrive-QA` to generate tests, it automatically invokes the `cpp-testing` skill.
 
 ### Which skills are implemented vs planned?
 
 **Implemented (✅):**
-- `odrive-qa-assistant` - Build firmware, run tests, symbol search
-- `devops-engineer` - CI/CD workflows, releases, GitHub Actions
+- `cpp-testing` - Unit test generation, doctest framework
+- `odrive-toolchain` - Build firmware, run tests, symbol search
+- `odrive-ops` - CI/CD workflows, releases, GitHub Actions
+- `ada-cpp-migration` - Ada to C++ code migration
 
 **Planned (🚧):**
 - `control-algorithms` - PID, observers, control theory
