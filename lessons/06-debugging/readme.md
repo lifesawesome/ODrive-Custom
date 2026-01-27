@@ -31,6 +31,7 @@ Debugging is where developers spend 30-50% of their time. This lesson teaches yo
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
+- [Available Agents and Skills](#available-agents-and-skills)
 - [Why Debugging with Copilot Matters](#why-debugging-with-copilot-matters)
 - [Learning Path](#learning-path)
 - [@terminal for Build Errors](#1-terminal-for-build-errors-10-min)
@@ -72,6 +73,56 @@ Before starting this session, ensure you have:
    - Select any code snippet
    - Type `/fix` in chat
    - Verify command is recognized
+
+---
+
+## Available Agents and Skills
+
+This repository includes several custom agents and skills that enhance debugging capabilities. Understanding when to use each agent is key to efficient debugging.
+
+### Custom Agents
+
+| Agent | Invocation | Purpose | Best For |
+|-------|------------|---------|----------|
+| **ODrive Engineer** | `@ODrive-Engineer` | Primary orchestrator for development tasks | Multi-file bugs, firmware development, complex analysis |
+| **ODrive QA** | `@ODrive-QA` | Testing & QA orchestrator | Test generation, build verification, coverage analysis |
+| **ODrive Reviewer** | `@ODrive-Reviewer` | Code review specialist | Style, safety, embedded best practices |
+| **ODrive Toolchain** | `@ODrive-Toolchain` | Build & test operations | Building firmware, running tests, symbol search |
+| **ODrive Ops** | `@ODrive-Ops` | CI/CD workflows | Release management, GitHub Actions |
+| **Ada to C++ Migrator** | `@ada-to-cpp-migrator` | Language migration specialist | Migrating Ada code to Modern C++ |
+
+### Available Skills
+
+Skills are specialized capabilities that agents can invoke:
+
+| Skill | Description | Status |
+|-------|-------------|--------|
+| **cpp-testing** | Unit test generation with doctest framework | ✅ Production |
+| **odrive-toolchain** | Build firmware, run tests, symbol search | ✅ Production |
+| **odrive-ops** | CI/CD workflows, releases, deployment | ✅ Production |
+| **control-algorithms** | PID controllers, observers, control transformations | 🚧 Planned |
+| **foc-tuning** | Automated FOC parameter tuning | 🚧 Planned |
+| **sensorless-control** | Sliding mode observers, PLL, back-EMF estimation | 🚧 Planned |
+| **pcb-review** | PCB schematic/layout review | 🚧 Planned |
+| **signal-integrity** | Impedance calculation, EMI analysis | 🚧 Planned |
+| **ada-cpp-migration** | Ada to Modern C++ migration patterns | ✅ Production |
+
+### When to Use Which Agent
+
+```
+Build/compile error? ──→ @terminal (quick fix)
+                    └─→ @ODrive-Toolchain (complex build issues)
+
+Single-file logic bug? ──→ /fix (inline correction)
+
+Multi-file bug? ──→ @ODrive-Engineer (orchestrated analysis)
+
+Need tests? ──→ @ODrive-QA (test generation)
+
+Code review? ──→ @ODrive-Reviewer (style & safety check)
+
+CI/CD issue? ──→ @ODrive-Ops (workflow management)
+```
 
 ---
 
@@ -389,7 +440,7 @@ The `/fix` command is a **code-focused debugging assistant** that:
 
 #### 1. **Off-by-One Errors**
 
-**File:** `demo_buggy.cpp` — FaultLogger class (line 29-37)
+**File:** `demo_buggy.cpp` — FaultLogger class (lines 31-38)
 
 **Buggy Code:**
 ```cpp
@@ -452,7 +503,7 @@ Or initialize watchdog_timer_ in constructor to avoid nullptr.
 
 #### 3. **Race Conditions (Thread Safety)**
 
-**File:** `demo_buggy.cpp` — Encoder class (lines 63-80)
+**File:** `demo_buggy.cpp` — Encoder class (lines 65-81)
 
 **Buggy Code:**
 ```cpp
@@ -537,7 +588,7 @@ If heap is required:
 
 #### 5. **Integer Overflow**
 
-**File:** `demo_buggy.cpp` — SpeedCalculator class (lines 96-106)
+**File:** `demo_buggy.cpp` — SpeedCalculator class (lines 104-111)
 
 **Buggy Code:**
 ```cpp
@@ -762,7 +813,7 @@ while (dma1->SR & DMA_BUSY) {
 ### Debugging Strategy with Copilot
 **🎯 Copilot Modes: Chat + Agent**
 
-> **Tip:** For complex debugging involving multiple files or domain expertise, use `@ODrive-Engineer` for firmware issues or `@ODrive-QA` for test-related debugging. The agents can invoke specialized skills like `odrive-qa-assistant` to build and verify fixes.
+> **Tip:** For complex debugging involving multiple files or domain expertise, use `@ODrive-Engineer` for firmware issues or `@ODrive-QA` for test-related debugging. The agents can invoke specialized skills like `cpp-testing` to build and verify fixes.
 
 **Step 1: Reproduce the Bug**
 - Can you trigger it consistently?
@@ -865,7 +916,7 @@ if (fault_write_idx_ >= FAULT_HISTORY_SIZE) {
 
 ### Bug 2: Race Condition in Position Estimate (5 min)
 
-**File:** `demo_buggy.cpp` — Encoder class (lines 52-81)
+**File:** `demo_buggy.cpp` — Encoder class (lines 65-81)
 
 **Buggy Code:**
 ```cpp
@@ -937,7 +988,7 @@ void Encoder::get_estimates(float* pos, float* vel) {
 
 ### Bug 3: Integer Overflow in Speed Calculation (5 min)
 
-**File:** `demo_buggy.cpp` — SpeedCalculator class (lines 96-106)
+**File:** `demo_buggy.cpp` — SpeedCalculator class (lines 104-111)
 
 **Buggy Code:**
 ```cpp
@@ -956,8 +1007,8 @@ float SpeedCalculator::calculate_rpm() {
 **Your Task:**
 
 **Step 1:** Use Copilot Chat to detect overflow
-1. Open `demo_buggy.cpp`, scroll to SpeedCalculator class (line 85)
-2. Select lines 96-106 (the `calculate_rpm` function)
+1. Open `demo_buggy.cpp`, scroll to SpeedCalculator class (line 92)
+2. Select lines 104-111 (the `calculate_rpm` function)
 3. Open Chat (`Ctrl+Alt+I`) and type:
 ```
 /explain why this gives wrong values at high speeds

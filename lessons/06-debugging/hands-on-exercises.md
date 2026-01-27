@@ -29,9 +29,9 @@ Open this file in VS Code before starting.
 ### Bug Locations in demo_buggy.cpp
 | Bug | Class | Lines |
 |-----|-------|-------|
-| 1. Circular Buffer | `FaultLogger` | 29-37 |
-| 2. Race Condition | `Encoder` | 63-80 |
-| 3. Integer Overflow | `SpeedCalculator` | 96-106 |
+| 1. Circular Buffer | `FaultLogger` | 31-38 |
+| 2. Race Condition | `Encoder` | 65-81 |
+| 3. Integer Overflow | `SpeedCalculator` | 104-111 |
 
 ### If demo_buggy.cpp Doesn't Exist
 
@@ -197,7 +197,7 @@ The motor controller logs the last 10 faults in a circular buffer. Users report 
 
 ### Buggy Code
 
-**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `FaultLogger` class (lines 23-48)
+**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `FaultLogger` class (lines 24-48)
 
 ```cpp
 #define FAULT_HISTORY_SIZE 10
@@ -225,8 +225,8 @@ public:
 
 **Step 1: Identify the Bug (2 min)**
 
-1. Open `demo_buggy.cpp` and scroll to the `FaultLogger` class (line 23)
-2. **Select lines 29-37** (the `log_fault` function)
+1. Open `demo_buggy.cpp` and scroll to the `FaultLogger` class (line 24)
+2. **Select lines 31-38** (the `log_fault` function)
 3. Open **Copilot Chat** panel (`Ctrl+Alt+I`)
 4. Type:
 ```
@@ -251,7 +251,7 @@ Ask Copilot to generate a test:
 @ODrive-QA Generate a unit test that logs 15 faults and verifies no crash
 ```
 
-> **Note:** Using `@ODrive-QA` invokes the `odrive-qa-assistant` skill for test generation.
+> **Note:** Using `@ODrive-QA` invokes the `cpp-testing` skill for test generation.
 
 Run the test mentally or with a simple main():
 ```cpp
@@ -304,7 +304,7 @@ The encoder updates position estimates in an 8 kHz interrupt. The main control l
 
 ### Buggy Code
 
-**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `Encoder` class (lines 52-81)
+**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `Encoder` class (lines 65-81)
 
 ```cpp
 class Encoder {
@@ -342,8 +342,8 @@ public:
 
 **Step 1: Identify the Race (2 min)**
 
-1. In `demo_buggy.cpp`, scroll to the `Encoder` class (line 52)
-2. **Select lines 63-80** (both `update_isr()` and `get_position()` functions)
+1. In `demo_buggy.cpp`, scroll to the `Encoder` class (line 55)
+2. **Select lines 65-81** (both `update_isr()` and `get_position()`/`get_velocity()` functions)
 3. Open **Copilot Chat** panel (`Ctrl+Alt+I`)
 4. Type:
 ```
@@ -463,7 +463,7 @@ The encoder calculates motor RPM from tick counts. At low speeds it works fine, 
 
 ### Buggy Code
 
-**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `SpeedCalculator` class (lines 85-109)
+**File:** `src-ODrive/Firmware/MotorControl/demo_buggy.cpp` — `SpeedCalculator` class (lines 104-111)
 
 ```cpp
 class SpeedCalculator {
@@ -497,8 +497,8 @@ public:
 
 **Step 1: Understand the Bug (2 min)**
 
-1. In `demo_buggy.cpp`, scroll to the `SpeedCalculator` class (line 85)
-2. **Select lines 96-106** (the `calculate_rpm` function)
+1. In `demo_buggy.cpp`, scroll to the `SpeedCalculator` class (line 92)
+2. **Select lines 104-111** (the `calculate_rpm` function)
 3. Open **Copilot Chat** panel (`Ctrl+Alt+I`)
 4. Type:
 ```
@@ -535,7 +535,7 @@ Ask:
 @ODrive-QA Generate a unit test for calculate_rpm that tests speeds from 100 to 50,000 RPM
 ```
 
-> **Note:** `@ODrive-QA` will invoke the `odrive-qa-assistant` skill to create comprehensive test cases.
+> **Note:** `@ODrive-QA` will invoke the `cpp-testing` skill to create comprehensive test cases.
 
 ### Success Criteria
 - ✅ Understand intermediate overflow concept
@@ -676,7 +676,7 @@ Context: [files involved, expected vs actual behavior]
 @ODrive-QA Verify the fix compiles correctly
 ```
 
-> **Note:** `@ODrive-QA` invokes the `odrive-qa-assistant` skill for builds and tests.
+> **Note:** `@ODrive-QA` invokes the `cpp-testing` and `odrive-toolchain` skills for builds and tests.
 
 ### Context is Key
 
