@@ -71,7 +71,7 @@ Safety & Power UP
 
 .. _install-odrivetool:
 
-Downloading and Installing :code:`odriveool`
+Downloading and Installing :code:`odrivetool`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Most instructions in this guide refer to a utility called `odrivetool`, so you should install that first.
@@ -222,7 +222,7 @@ Start :code:`odrivetool`
 --------------------------------------------------------------------------------
 
 * To launch the main interactive ODrive tool, type :code:`odrivetool` and :kbd:`Enter`. 
-* Connect your ODrive and wait for the tool to find it. If it dos not connect after a few seconds refer to the :ref:`troubleshooting guide <troubleshooting>`. 
+* Connect your ODrive and wait for the tool to find it. If it does not connect after a few seconds refer to the :ref:`troubleshooting guide <troubleshooting>`.
 * Now you can, for instance type :code:`odrv0.vbus_voltage` :kbd:`Enter` to inspect the boards main supply voltage.
 
 It should look something like this:

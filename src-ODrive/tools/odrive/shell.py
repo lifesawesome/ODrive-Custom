@@ -8,6 +8,9 @@ import odrive.enums
 from odrive.utils import *
 
 def print_banner():
+    """
+    Prints the ODrive welcome banner with links to documentation and community resources.
+    """
     print("Website: https://odriverobotics.com/")
     print("Docs: https://docs.odriverobotics.com/")
     print("Forums: https://discourse.odriverobotics.com/")
@@ -19,6 +22,17 @@ def print_banner():
     print('You can also type help() or quit().')
 
 def print_help(args, have_devices):
+    """
+    Prints usage help for the interactive odrivetool shell.
+
+    Provides guidance on connecting to an ODrive and navigating its property tree
+    using tab completion.
+
+    Args:
+        args: Parsed command-line arguments (used to display the connection path).
+        have_devices (bool): If True, instructs the user to connect a device first;
+            otherwise shows usage examples assuming a device is already connected.
+    """
     print('')
     if have_devices:
         print('Connect your ODrive to {} and power it up.'.format(args.path))
@@ -42,6 +56,15 @@ interactive_variables = {}
 discovered_devices = []
 
 def benchmark(odrv):
+    """
+    Measures the asynchronous read throughput for the ODrive's vbus_voltage property.
+
+    Queues 1000 asynchronous reads and reports the time taken. Used to evaluate
+    the USB communication performance.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+    """
     import asyncio
     import time
 

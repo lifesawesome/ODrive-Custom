@@ -15,6 +15,8 @@ Per-Axis Commands
 -------------------------------------------------------------------------------
 
 For the most part, both axes on the ODrive can be controlled independently.
+Axis 0 corresponds to connector M0 and is accessed via :code:`odrv0.axis0`;
+axis 1 corresponds to M1 and is accessed via :code:`odrv0.axis1`.
 
 State Machine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,6 +104,8 @@ Diagnostics
  * :code:`<odrv>.serial_number`: A number that uniquely identifies your device. When printed in upper case hexadecimal (:code:`hex(<odrv>.serial_number).upper()`), this is identical to the serial number indicated by the USB descriptor.
  * :code:`<odrv>.fw_version_major`, :code:`<odrv>.fw_version_minor`, :code:`<odrv>.fw_version_revision`: The firmware version that is currently running.
  * :code:`<odrv>.hw_version_major`, :code:`<odrv>.hw_version_minor`, :code:`<odrv>.hw_version_revision`: The hardware version of your ODrive.
+ * :code:`<odrv>.vbus_voltage`: The current DC bus voltage [V]. Useful for monitoring the power supply during operation.
+ * :code:`<odrv>.ibus`: The current drawn from the DC bus [A]. Positive values indicate current flowing from the supply into the ODrive.
 
 .. _sensorless-setup:
 

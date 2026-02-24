@@ -33,18 +33,58 @@ _VT100Colors = {
 }
 
 async def get_serial_number_str(device):
+    """
+    Asynchronously retrieves the serial number of an ODrive device as an uppercase hex string.
+
+    Args:
+        device: The ODrive device object.
+
+    Returns:
+        str: The serial number as an uppercase hexadecimal string (via .upper()),
+            or "[unknown serial number]" if the property is unavailable.
+    """
     if hasattr(device, '_serial_number_property'):
         return format(await device._serial_number_property.read(), 'x').upper()
     else:
         return "[unknown serial number]"
 
 def get_serial_number_str_sync(device):
+    """
+    Synchronously retrieves the serial number of an ODrive device as an uppercase hex string.
+
+    Args:
+        device: The ODrive device object.
+
+    Returns:
+        str: The serial number as an uppercase hexadecimal string (via .upper()),
+            or "[unknown serial number]" if the property is unavailable.
+    """
     if hasattr(device, '_serial_number_property'):
         return format(device._serial_number_property.read(), 'x').upper()
     else:
         return "[unknown serial number]"
 
 def calculate_thermistor_coeffs(degree, Rload, R_25, Beta, Tmin, Tmax, thermistor_bottom = False, plot = False):
+    """
+    Calculates polynomial coefficients for a thermistor's voltage-to-temperature conversion.
+
+    Uses the Beta parameter equation to model the thermistor's resistance vs. temperature curve,
+    then fits a polynomial of the specified degree to map normalized voltage to temperature.
+
+    Args:
+        degree (int): Degree of the polynomial fit (e.g., 3 for a cubic fit).
+        Rload (float): Load resistance in Ohms in the voltage divider circuit.
+        R_25 (float): Thermistor resistance at 25°C in Ohms.
+        Beta (float): Beta parameter of the thermistor in Kelvin.
+        Tmin (float): Minimum temperature of interest in °C.
+        Tmax (float): Maximum temperature of interest in °C.
+        thermistor_bottom (bool): If True, the thermistor is on the low side (bottom) of the
+            voltage divider; otherwise it is on the high side (top). Default is False.
+        plot (bool): If True, plots the actual vs. fitted temperature curves. Default is False.
+
+    Returns:
+        numpy.poly1d: A polynomial object that maps normalized voltage to temperature in °C.
+    """
     import numpy as np
     T_25 = 25 + 273.15 #Kelvin
     temps = np.linspace(Tmin, Tmax, 1000)
@@ -78,6 +118,22 @@ class OperationAbortedException(Exception):
     pass
 
 def set_motor_thermistor_coeffs(axis, Rload, R_25, Beta, Tmin, Tmax, thermistor_bottom = False):
+    """
+    Configures the motor thermistor polynomial coefficients on the specified axis.
+
+    Calculates a 3rd-degree polynomial fit for the given thermistor parameters and writes
+    the coefficients directly to the ODrive axis's motor thermistor configuration.
+
+    Args:
+        axis: The ODrive axis object (e.g., odrv0.axis0).
+        Rload (float): Load resistance in Ohms in the voltage divider circuit.
+        R_25 (float): Thermistor resistance at 25°C in Ohms.
+        Beta (float): Beta parameter of the thermistor in Kelvin.
+        Tmin (float): Minimum temperature of interest in °C.
+        Tmax (float): Maximum temperature of interest in °C.
+        thermistor_bottom (bool): If True, the thermistor is on the low side of the
+            voltage divider. Default is False.
+    """
     coeffs = calculate_thermistor_coeffs(3, Rload, R_25, Beta, Tmin, Tmax, thermistor_bottom)
     axis.motor.motor_thermistor.config.poly_coefficient_0 = float(coeffs[3])
     axis.motor.motor_thermistor.config.poly_coefficient_1 = float(coeffs[2])
@@ -85,6 +141,23 @@ def set_motor_thermistor_coeffs(axis, Rload, R_25, Beta, Tmin, Tmax, thermistor_
     axis.motor.motor_thermistor.config.poly_coefficient_3 = float(coeffs[0])
 
 def dump_errors(odrv, clear=False, printfunc = print):
+    """
+    Prints all active errors for each axis and submodule of an ODrive device.
+
+    Iterates over all axes and their submodules (motor, encoder, controller, etc.),
+    decoding and displaying any active error flags. Useful for diagnosing issues
+    with the ODrive during development or operation.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+        clear (bool): If True, clears all errors on the device after printing them.
+            Default is False.
+        printfunc (callable): Function used for output. Defaults to the built-in print.
+
+    Example:
+        >>> dump_errors(odrv0)
+        >>> dump_errors(odrv0, clear=True)
+    """
     axes = [(name, getattr(odrv, name)) for name in dir(odrv) if name.startswith('axis')]
     axes.sort()
 
@@ -127,6 +200,17 @@ def dump_errors(odrv, clear=False, printfunc = print):
         odrv.clear_errors()
 
 def oscilloscope_dump(odrv, num_vals, filename='oscilloscope.csv'):
+    """
+    Dumps oscilloscope data from the ODrive to a CSV file.
+
+    Reads a sequence of values from the ODrive's built-in oscilloscope and writes
+    them to the specified file, one value per line.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+        num_vals (int): Number of oscilloscope values to read and dump.
+        filename (str): Path to the output CSV file. Defaults to 'oscilloscope.csv'.
+    """
     with open(filename, 'w') as f:
         for x in range(num_vals):
             f.write(str(odrv.oscilloscope.get_val(x)))
@@ -263,6 +347,23 @@ def step_and_plot(  axis,
                     settle_time=0.5,
                     data_rate=500.0,
                     ctrl_mode=CONTROL_MODE_POSITION_CONTROL):
+    """
+    Sends a step command to an axis and captures/plots the system response.
+
+    Switches the axis to the specified control mode, applies a step input,
+    captures the response data using BulkCapture, then returns the axis to idle
+    and plots the results. Useful for tuning controller gains.
+
+    Args:
+        axis: The ODrive axis object to step (e.g., odrv0.axis0).
+        step_size (float): Magnitude of the step input in the relevant units
+            (turns for position control, turns/s for velocity control). Default is 100.0.
+        settle_time (float): Time in seconds to allow the system to settle after the step.
+            Default is 0.5.
+        data_rate (float): Data sampling rate in Hz. Default is 500.0.
+        ctrl_mode: Control mode to use. Must be CONTROL_MODE_POSITION_CONTROL or
+            CONTROL_MODE_VELOCITY_CONTROL. Default is CONTROL_MODE_POSITION_CONTROL.
+    """
     
     if ctrl_mode is CONTROL_MODE_POSITION_CONTROL:
         get_var_callback = lambda :[axis.encoder.pos_estimate, axis.controller.pos_setpoint]
@@ -316,6 +417,12 @@ def print_drv_regs(name, motor):
     print("Control Reg 2: " + str(ctrl_reg_2) + " (" + format(ctrl_reg_2, '#09b') + ")")
 
 def show_oscilloscope(odrv):
+    """
+    Reads and plots 18000 oscilloscope samples from the ODrive.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+    """
     size = 18000
     values = []
     for i in range(size):
@@ -369,6 +476,17 @@ def usb_burn_in_test(get_var_callback, cancellation_token):
     threading.Thread(target=fetch_data, daemon=True).start()
 
 def yes_no_prompt(question, default=None):
+    """
+    Prompts the user with a yes/no question and returns their answer.
+
+    Args:
+        question (str): The question to display to the user.
+        default (bool or None): The default answer if the user presses Enter without typing.
+            True means yes, False means no, None means no default (answer is required).
+
+    Returns:
+        bool: True if the user answered yes, False if no.
+    """
     if default is None:
         question += " [y/n] "
     elif default == True:
@@ -388,6 +506,15 @@ def yes_no_prompt(question, default=None):
             return default
 
 def dump_interrupts(odrv):
+    """
+    Prints a table of active interrupt statuses for the ODrive's STM32 microcontroller.
+
+    Iterates over all known interrupt request numbers (IRQn) and prints the priority,
+    enabled state, and invocation count for each interrupt that is currently active.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+    """
     interrupts = [
         (-12, "MemoryManagement_IRQn"),
         (-11, "BusFault_IRQn"),
@@ -504,6 +631,15 @@ def dump_interrupts(odrv):
                     str((status >> 8) & 0x7fffff).rjust(7)))
 
 def dump_threads(odrv):
+    """
+    Prints a table of RTOS thread statistics for the ODrive firmware.
+
+    Displays each thread's stack size, maximum stack usage, and priority.
+    Useful for diagnosing stack overflow issues or understanding CPU usage.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+    """
     prefixes = ["max_stack_usage_", "stack_size_", "prio_"]
     keys = [k[len(prefix):] for k in dir(odrv.system_stats) for prefix in prefixes if k.startswith(prefix)]
     good_keys = set([k for k in set(keys) if keys.count(k) == len(prefixes)])
@@ -524,6 +660,15 @@ def dump_threads(odrv):
 
 
 def dump_dma(odrv):
+    """
+    Prints a table of active DMA stream configurations for the ODrive's STM32 microcontroller.
+
+    Shows which DMA streams are active, their channel assignments, and the mapped
+    peripheral functions. Supports ODrive hardware versions 3 and 4.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+    """
     if odrv.hw_version_major == 3:
         dma_functions = [[
             # https://www.st.com/content/ccc/resource/technical/document/reference_manual/3d/6d/5a/66/b4/99/40/d4/DM00031020.pdf/files/DM00031020.pdf/jcr:content/translations/en.DM00031020.pdf Table 42
@@ -589,6 +734,19 @@ def dump_dma(odrv):
                      "*" if (status & 0x80000000) else " "))
 
 def dump_timing(odrv, n_samples=100, path='/tmp/timings.png'):
+    """
+    Captures and plots timing information for ODrive firmware tasks.
+
+    Samples the start time and duration of each firmware task multiple times,
+    then generates a horizontal bar chart saved as an image file. Useful for
+    identifying CPU bottlenecks in the firmware control loop.
+
+    Args:
+        odrv: The ODrive object (e.g., odrv0).
+        n_samples (int): Number of timing samples to collect. Default is 100.
+        path (str): File path where the timing plot image will be saved.
+            Default is '/tmp/timings.png'.
+    """
     import matplotlib.pyplot as plt
     import re
     import numpy as np
