@@ -164,3 +164,37 @@ Index search never completes
 * There are some GPIO pin interrupt collisions on ODrive 3.6 that could cause index search to fail in certain conditions. 
   If you are using both step/dir and index pins, we recommend disabling :code:`step_dir_always_on`.  
   For more information, `see this thread <https://github.com/odriverobotics/ODrive/issues/605#issuecomment-971576393>`_.
+
+Motor does not respond to commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Verify the axis is in :code:`AXIS_STATE_CLOSED_LOOP_CONTROL` by checking :code:`<axis>.current_state`.
+* Run :code:`dump_errors(odrv0)` to check for any active errors that may be preventing motor movement.
+* Confirm that calibration completed successfully. Re-run :code:`AXIS_STATE_FULL_CALIBRATION_SEQUENCE` if necessary.
+* Check that the motor phase resistance and inductance measurements look reasonable. 
+  A phase resistance of 0 or very high values usually indicates a wiring problem.
+
+ODrive does not appear on USB / cannot connect
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Make sure the ODrive has a valid 12–56V DC power supply connected; it does not power itself over USB.
+* On **Linux**, verify the udev rules are installed (see :ref:`Getting Started <install-odrivetool>`). 
+  Try running :code:`lsusb` to confirm the device is enumerated.
+* On **Windows**, use `Zadig <http://zadig.akeo.ie/>`_ to ensure the driver for :code:`ODrive 3.x Native Interface` is set to :code:`WinUSB`.
+* Try a different USB cable and a different USB port (preferably a USB 2.0 port directly on the motherboard).
+* Ensure no other program (another :code:`odrivetool` instance, a serial monitor, etc.) is already connected to the ODrive.
+
+Calibration fails immediately with MOTOR_ERROR_PHASE_RESISTANCE_OUT_OF_RANGE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Check the motor wiring. Loose or missing phase connections will cause this error.
+* Verify the connector on the ODrive screw terminal is tight and making good contact.
+* Make sure :code:`<axis>.motor.config.motor_type` is set correctly for your motor (high-current vs. gimbal).
+* If the resistance is too high, try increasing :code:`<axis>.motor.config.calibration_current` slightly.
+
+Encoder CPR is wrong / position drifts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Double-check the encoder CPR value. The :code:`cpr` setting must be **4 × PPR** (pulses per revolution).
+* Verify the encoder A and B channels are not swapped. Swapped channels will cause the encoder to count in the wrong direction.
+* For SPI encoders, confirm the SPI mode and clock settings match the encoder's datasheet.
