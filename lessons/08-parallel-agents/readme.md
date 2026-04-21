@@ -1148,17 +1148,17 @@ You can run multiple instances of the same agent with different **task contexts*
 
 ### Can I use parallel agents in an air-gapped environment?
 
-**Short Answer:** Local agents work with Foundry Local; cloud agents require internet.
+**Short Answer:** Local agents can work with an approved local model endpoint; cloud agents require internet.
 
 | Environment | Local Agents (VS Code) | Cloud Agents (GitHub) |
 |-------------|------------------------|----------------------|
 | Internet connected | ✅ Full functionality | ✅ Full functionality |
-| Air-gapped + Foundry Local | ✅ Works offline | ❌ Not available |
+| Air-gapped + local model endpoint | ✅ Works offline | ❌ Not available |
 | Air-gapped, no local model | ❌ Requires connection | ❌ Not available |
 
 **For Air-Gapped Development:**
-1. Set up **Azure AI Foundry Local** on an approved internal server
-2. Configure VS Code to use local endpoint
+1. Set up an approved internal model endpoint
+2. Configure VS Code to use the local endpoint
 3. Custom agents work because they're just prompt files
 4. Skills work if they don't require external services
 

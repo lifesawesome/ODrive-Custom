@@ -82,7 +82,7 @@ ODriveHack/
 │   ├── 06-debugging/              # AI-assisted debugging
 │   ├── 07-copilot-cli/            # Command-line interface
 │   ├── 08-parallel-agents/        # Multi-agent workflows
-│   └── 09-foundry-local/          # Local AI inference
+│   
 ├── src-ODrive/                    # ODrive firmware for exercises
 └── README.md                      # This file
 ```
@@ -102,8 +102,7 @@ ODriveHack/
 | 5 | [C++ Best Practices](lessons/05-best-practices/readme.md) | 50 min | RAII, templates, const correctness, embedded patterns |
 | 6 | [Debugging](lessons/06-debugging/readme.md) | 45 min | @terminal, /fix, common C++ bugs |
 | 7 | [Copilot CLI](lessons/07-copilot-cli/readme.md) | 45 min | Using the cli. |
-| 8 | [Parallel Agents](lessons/08-parallel-agents/readme.md) | 20 min | Multi-agent workflows, cloud agents |
-| 9 | [Foundry Local](lessons/09-foundry-local/readme.md) | 15 min | Local AI inference, offline development |
+| 8 | [Parallel Agents](lessons/08-parallel-agents/readme.md) | 20 min | Multi-agent workflows, cloud agents, offline considerations |
 
 ## Day 2: Hack Day - Modernize Your Projects
 
