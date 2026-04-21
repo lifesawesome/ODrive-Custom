@@ -6,13 +6,12 @@
 
 | # | Lesson | Duration | Topics |
 |---|--------|----------|--------|
-| 1 | [Basic Features](lessons/02-basic%20features/readme.md) | 45 min | Chat modes, @workspace, /fix, /explain, inline chat |
-| 2 | [Planning & Steering](lessons/03-planning/readme.md) | 60 min | spec driven development, copilot-instructions.md, prompt files, custom agents, skills |
-| 3 | [Agentic Patterns](lessons/04-agentic-patterns/readme.md) | 45 min | Context engineering, decomposition, iterative refinement |
-| 4 | [C++ Best Practices](lessons/05-best-practices/readme.md) | 50 min | RAII, templates, const correctness, embedded patterns |
-| 5 | [Debugging](lessons/06-debugging/readme.md) | 45 min | @terminal, /fix, common C++ bugs |
-| 6 | [Copilot CLI](lessons/07-copilot-cli/readme.md) | 45 min | Using the cli. |
-| 7 | [Parallel Agents](lessons/08-parallel-agents/readme.md) | 20 min | Multi-agent workflows, cloud agents, offline considerations |
+| 1 | [Basic Features](lessons/02-basic%20features/readme.md) | 8:30-9:30am - Gaurav | Chat modes, @workspace, /fix, /explain, inline chat |
+| 2 | [Planning & Steering](lessons/03-planning/readme.md) | 9:30-10:30 - Tom | spec driven development, copilot-instructions.md, prompt files, custom agents, skills |
+| 3 | [Agentic Patterns](lessons/04-agentic-patterns/readme.md) | 10:30-11:30 - Tammy | Context engineering, decomposition, iterative refinement |
+| 4 | [C++ Best Practices](lessons/05-best-practices/readme.md) | 11:30-12:30 - Michael | RAII, templates, const correctness, embedded patterns |
+| 5 | [Debugging](lessons/06-debugging/readme.md) | 1:30-2:30p Gaurav/Michael | @terminal, /fix, common C++ bugs |
+| 7 | [Parallel Agents](lessons/08-parallel-agents/readme.md) | 2:30-3:30p | Multi-agent workflows, cloud agents, offline considerations |
 
 ## Day 2: Hack Day - Modernize Your Projects
 
