@@ -6,14 +6,13 @@
 
 | # | Lesson | Duration | Topics |
 |---|--------|----------|--------|
-| 1 | [Welcome & Setup](lessons/01-welcome-agenda/agenda.md) | 40 min | Objectives, workspace setup, Copilot architecture |
-| 2 | [Basic Features](lessons/02-basic%20features/readme.md) | 45 min | Chat modes, @workspace, /fix, /explain, inline chat |
-| 3 | [Planning & Steering](lessons/03-planning/readme.md) | 60 min | spec driven development, copilot-instructions.md, prompt files, custom agents, skills |
-| 4 | [Agentic Patterns](lessons/04-agentic-patterns/readme.md) | 45 min | Context engineering, decomposition, iterative refinement |
-| 5 | [C++ Best Practices](lessons/05-best-practices/readme.md) | 50 min | RAII, templates, const correctness, embedded patterns |
-| 6 | [Debugging](lessons/06-debugging/readme.md) | 45 min | @terminal, /fix, common C++ bugs |
-| 7 | [Copilot CLI](lessons/07-copilot-cli/readme.md) | 45 min | Using the cli. |
-| 8 | [Parallel Agents](lessons/08-parallel-agents/readme.md) | 20 min | Multi-agent workflows, cloud agents, offline considerations |
+| 1 | [Basic Features](lessons/02-basic%20features/readme.md) | 45 min | Chat modes, @workspace, /fix, /explain, inline chat |
+| 2 | [Planning & Steering](lessons/03-planning/readme.md) | 60 min | spec driven development, copilot-instructions.md, prompt files, custom agents, skills |
+| 3 | [Agentic Patterns](lessons/04-agentic-patterns/readme.md) | 45 min | Context engineering, decomposition, iterative refinement |
+| 4 | [C++ Best Practices](lessons/05-best-practices/readme.md) | 50 min | RAII, templates, const correctness, embedded patterns |
+| 5 | [Debugging](lessons/06-debugging/readme.md) | 45 min | @terminal, /fix, common C++ bugs |
+| 6 | [Copilot CLI](lessons/07-copilot-cli/readme.md) | 45 min | Using the cli. |
+| 7 | [Parallel Agents](lessons/08-parallel-agents/readme.md) | 20 min | Multi-agent workflows, cloud agents, offline considerations |
 
 ## Day 2: Hack Day - Modernize Your Projects
 
